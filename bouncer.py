@@ -11,7 +11,6 @@ import sqlite3
 
 app = Flask(__name__)
 
-
 # Database helper functions (we don't need no steenkin' ORM!)
 
 @contextmanager
@@ -129,6 +128,9 @@ def go(p):
       return 'No such link ({}) found'.format(p), 404
     else:
       url_id, url_pattern = result
+      num_vars = len(url_pattern.split('{}')) - 1
+      gaps = num_vars - len(pieces)
+      pieces += ([''] * gaps)
       full_url = url_pattern.format(*[str(p) for p in pieces])
       c.execute('''
         update urls set atime = current_timestamp,
