@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 from flask import Flask, redirect, render_template, request, url_for
 
+import re
 import sqlite3
 
 app = Flask(__name__)
@@ -90,10 +91,16 @@ def top_n_urls(order_by, limit=10):
 
   return results
 
+def validate_slug(slug):
+  if slug in app.view_functions:
+    raise ValueError('cannot use an existing view name ({}) as a slug')
+  elif not re.match(r'^[-\w/_\.]+$', slug):
+    raise ValueError('invalid characters in slug')
+
 # Actual app routes start here
 
 @app.route('/')
-def index():
+def home():
   limit = 10
 
   recent = top_n_urls('rowid', limit)
@@ -127,6 +134,7 @@ def go(p):
 def new():
   if request.method == 'POST':
     slug = request.form['slug']
+    validate_slug(slug)
     full_url = request.form['full_url']
     url_id = iq('insert into urls(slug, full_url) values(?, ?)', slug, full_url)
     return redirect(url_for('show', url_id=url_id))
@@ -137,6 +145,7 @@ def new():
 def edit(url_id):
   if request.method == 'POST':
     slug = request.form['slug']
+    validate_slug(slug)
     full_url = request.form['full_url']
     q('update urls set slug = ?, full_url = ? where rowid = ?', slug, full_url, url_id)
     return redirect(url_for('show', url_id=url_id))
@@ -150,7 +159,11 @@ def show(url_id):
 
 @app.route('/delete', methods=['POST'])
 def delete():
-  pass
+  url_id = request.form['url_id']
+  confirm = request.form['yes_i_mean_it']
+  if confirm == 'y':
+    iq('delete from urls where rowid = ?', url_id)
+  return redirect('/')
 
 @app.route('/find')
 def find():

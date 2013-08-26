@@ -1,11 +1,30 @@
 {% extends "layout.html" %}
 
+{% block postbody %}
+<script>
+$("#delete-form").submit(function () {
+  result = confirm("Are you sure you wish to delete this URL? All history will be lost.");
+  if (result) {
+    var hidden = $("<input type='hidden' name='yes_i_mean_it' value='y'>");
+    $("#delete-form").append(hidden);
+  }
+  return result;
+});
+</script>
+{% endblock %}
+
 {% block content %}
 <form action="{{ target }}" method="POST">
 <label for="slug">Slug</label>
 <input name="slug" type="text" size="30" value="{{ url.slug }}"></input><br>
 <label for="full_url">Full URL</label>
 <input name="full_url" type="text" size="60" value="{{ url.full_url }}"></input><br>
-<input type="submit">
+<input type="submit" value="Save changes">
 </form>
+{% if url.url_id %}
+<form id="delete-form" action="/delete" method="POST">
+<input type="hidden" name="url_id" value="{{ url.url_id }}">
+<input type="submit" value="Delete">
+</form>
+{% endif %}
 {% endblock %}
