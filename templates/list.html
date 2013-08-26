@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% import "helpers.html" as helpers %}
+
+{% block content %}
+<h3>Found {{ results|length }} results for your search '{{ search }}'</h3>
+<ul>
+  {% for url in results %}
+  <li>{{ helpers.format_url_cell(url) }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

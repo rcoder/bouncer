@@ -1,3 +1,21 @@
+body {
+  background: #ddd;
+}
+
 #search-form {
   display: inline;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+table.listing th {
+  margin: 0px;
+  padding: 0.25em;
+}
+
+table.listing td {
+  margin: 0px;
+  padding: 0.25em;
 }

@@ -16,7 +16,7 @@ $("#delete-form").submit(function () {
 {% endblock %}
 
 {% block content %}
-<form action="{{ target }}" method="POST">
+<form class="entry" action="{{ target }}" method="POST">
 <label for="slug">Slug</label>
 <input name="slug" type="text" size="30" value="{{ url.slug }}"></input><br>
 <label for="full_url">Full URL</label>
