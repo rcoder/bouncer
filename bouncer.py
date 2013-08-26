@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+# Copyright 2013 by Urban Airship and Lennon Day-Reynolds <lennon@urbanairship.com>
+# See license information in COPYING.
+
 from contextlib import contextmanager
 from flask import Flask, redirect, render_template, request, url_for
 
@@ -5,6 +10,7 @@ import re
 import sqlite3
 
 app = Flask(__name__)
+
 
 # Database helper functions (we don't need no steenkin' ORM!)
 
@@ -123,7 +129,7 @@ def go(p):
       return 'No such link ({}) found'.format(p), 404
     else:
       url_id, url_pattern = result
-      full_url = url_pattern.format(pieces)
+      full_url = url_pattern.format(*[str(p) for p in pieces])
       c.execute('''
         update urls set atime = current_timestamp,
         clicks = (clicks + 1) where rowid = ?
