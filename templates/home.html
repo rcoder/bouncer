@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% macro format_url_cell(url) %}
+  <a href="/{{ url.slug }}">{{ url.slug }}</a> (<a href="/show/{{ url.url_id }}">show</a>)
+{% endmacro %}
+
+{% block content %}
+{% if size_of_lists == 0 %}
+<em>No URLs found! Want to <a href="/new">create one</a>?
+{% else %}
+<table>
+  <tr>
+    <th>Recently created</th>
+    <th>Recently accessed</th>
+    <th>Most popular</th>
+  </tr>
+  {% for n in range(size_of_lists) %}
+  <tr>
+    <td>{{ format_url_cell(recent[n]) }}</td>
+    <td>{{ format_url_cell(active[n]) }}</td>
+    <td>{{ format_url_cell(clicks[n]) }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

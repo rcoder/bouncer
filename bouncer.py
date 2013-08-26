@@ -42,20 +42,25 @@ def iq(q, *params):
 
 # Generic helpers
 
+def make_url_dict(row):
+  url_id, slug, full_url, clicks, ctime, atime = row
+  url_dict = {
+    'url_id': url_id,
+    'slug': slug,
+    'full_url': full_url,
+    'clicks': clicks,
+    'ctime': ctime,
+    'atime': atime
+  }
+  return url_dict
+
 def load_url_info(url_id):
   url_dict = None
-  sql = 'select slug, full_url, clicks, ctime, atime from urls where rowid = ?'
+  sql = 'select rowid, slug, full_url, clicks, ctime, atime from urls where rowid = ?'
   with q(sql, url_id) as c:
     result = c.fetchone()
     if result is not None:
-      slug, full_url, clicks, ctime, atime = result
-      url_dict = {
-        'slug': slug,
-        'full_url': full_url,
-        'clicks': clicks,
-        'ctime': ctime,
-        'atime': atime
-      }
+      url_dict = make_url_dict(result)
   return url_dict
 
 def render_template_with_url(template, url_id, params=None, url_param_name='url'):
@@ -70,11 +75,36 @@ def render_template_with_url(template, url_id, params=None, url_param_name='url'
     params[url_param_name] = url_dict
     return render_template(template, **params)
 
+def top_n_urls(order_by, limit=10):
+  sql = '''
+    select rowid, slug, full_url, clicks, ctime, atime
+    from urls
+    order by {} desc
+  limit {}'''.format(order_by, limit)
+  results = []
+
+  with q(sql) as c:
+    for row in c:
+      url_dict = make_url_dict(row)
+      results.append(url_dict)
+
+  return results
+
 # Actual app routes start here
 
 @app.route('/')
 def index():
-  return 'ok'
+  limit = 10
+
+  recent = top_n_urls('rowid', limit)
+  active = top_n_urls('atime', limit)
+  clicks = top_n_urls('clicks', limit)
+
+  size_of_lists = max([len(x) for x in (recent, active, clicks)])
+
+  return render_template('home.html',
+    recent=recent, active=active, clicks=clicks,
+    size_of_lists=size_of_lists)
 
 @app.route('/<path:p>')
 def go(p):
@@ -101,7 +131,7 @@ def new():
     url_id = iq('insert into urls(slug, full_url) values(?, ?)', slug, full_url)
     return redirect(url_for('show', url_id=url_id))
   else:
-    return render_template('edit.html', target=url_for('new'))
+    return render_template('edit.html', url={}, target=url_for('new'))
 
 @app.route('/edit/<int:url_id>')
 def edit(url_id):
