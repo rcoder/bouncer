@@ -141,13 +141,13 @@ def new():
   else:
     return render_template('edit.html', url={}, target=url_for('new'))
 
-@app.route('/edit/<int:url_id>')
+@app.route('/edit/<int:url_id>', methods=['GET', 'POST'])
 def edit(url_id):
   if request.method == 'POST':
     slug = request.form['slug']
     validate_slug(slug)
     full_url = request.form['full_url']
-    q('update urls set slug = ?, full_url = ? where rowid = ?', slug, full_url, url_id)
+    iq('update urls set slug = ?, full_url = ? where rowid = ?', slug, full_url, url_id)
     return redirect(url_for('show', url_id=url_id))
   else:
     params = {'target': url_for('edit', url_id=url_id)}
@@ -169,12 +169,13 @@ def delete():
 def find():
   search = request.args.get('q')
   results = []
-  if q is None:
+  if search is None:
     return 'Search filter cannot be empty!', 400
   else:
-    with q('select rowid, slug, full_url from urls where slug like ?', '%'+search+'%') as c:
-      results = c.fetchmany()
-      return render_template('list.html', results=results)
+    sql = 'select rowid, slug, full_url, clicks, ctime, atime from urls where slug like ?'
+    with q(sql, '%'+search+'%') as c:
+      results = [make_url_dict(row) for row in c.fetchmany()]
+      return render_template('list.html', results=results, search=search)
 
 if __name__ == '__main__':
   app.debug = True
