@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form action="{{ target }}" method="POST">
+<label for="slug">Slug</label>
+<input name="slug" type="text" size="30" value="{{ url.slug }}"></input><br>
+<label for="full_url">Full URL</label>
+<input name="full_url" type="text" size="60" value="{{ url.full_url }}"></input><br>
+<input type="submit">
+</form>
+{% endblock %}

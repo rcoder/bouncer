@@ -1,0 +1,24 @@
+{% block content %}
+<table>
+  <tr>
+    <th>Slug</th>
+    <td>{{ url.slug }}</td>
+  </tr>
+  <tr>
+    <th>Full URL</th>
+    <td><a href="{{ url.full_url }}">{{ url.full_url }}</a></td>
+  </tr>
+  <tr>
+    <th>Clicks</th>
+    <td>{{ url.clicks }}</td>
+  </tr>
+  <tr>
+    <th>Accessed</th>
+    <td>{{ url.atime }}</td>
+  </tr>
+  <tr>
+    <th>Created</th>
+    <td>{{ url.ctime }}</td>
+  </tr>
+</table>
+{% endblock %}
