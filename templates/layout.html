@@ -3,18 +3,23 @@
   <head>
     <title>{% block title %}bouncer :: private link directory{% endblock %}</title>
     <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/jquery.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
   </head>
   <body>
-    <a href="/">&#8962; bouncer</a>
-    {% block searchbox -%}
-    <form id="search-form" action="/find">
-    <input type="text" name="q" size="20" value="{{ search }}">
-    <input type="submit" value="?">
-    </form>
-    {%- endblock %}
-    <br>
-    {% block content %}{% endblock %}
+    <div class="container-narrow">
+      <div class="masthead">
+        {% block searchbox -%}
+        <form id="search-form" class="form-search navbar-form pull-right" action="/find">
+          <input type="text" name="q" size="20" value="{{ search }}" class="search-query">
+          <input type="submit" value="Search" class="btn">
+        </form>
+        {%- endblock %}
+        <h3 class="muted"><a href="/">&#8962; bouncer</a></h3>
+      </div>
+      {% block content %}{% endblock %}
+    </div>
+    <script src="/static/jquery.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    {% block postbody %}{% endblock %}
   </body>
-  {% block postbody %}{% endblock %}
 </html>

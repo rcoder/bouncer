@@ -5,7 +5,7 @@
 {% block postbody %}
 <script>
 $("#delete-form").submit(function () {
-  result = confirm("Are you sure you wish to delete this URL? All history will be lost.");
+  result = confirm("Are you sure you wish to delete this link? All history will be lost.");
   if (result) {
     var hidden = $("<input type='hidden' name='yes_i_mean_it' value='y'>");
     $("#delete-form").append(hidden);
@@ -17,16 +17,19 @@ $("#delete-form").submit(function () {
 
 {% block content %}
 <form class="entry" action="{{ target }}" method="POST">
-<label for="slug">Slug</label>
-<input name="slug" type="text" size="30" value="{{ url.slug }}"></input><br>
-<label for="full_url">Full URL</label>
-<input name="full_url" type="text" size="60" value="{{ url.full_url }}"></input><br>
-<input type="submit" value="Save changes">
+  <label for="slug">Slug</label>
+  <input name="slug" type="text" size="30" value="{{ url.slug }}"
+    placeholder="my_example">
+  <label for="full_url">Full URL</label>
+  <input name="full_url" type="text" size="60" value="{{ url.full_url }}"
+    placeholder="http://example.com/" class="input-xxlarge">
+  <br>
+  <input type="submit" value="Save changes" class="btn btn-primary">
 </form>
 {% if url.url_id %}
 <form id="delete-form" action="/delete" method="POST">
-<input type="hidden" name="url_id" value="{{ url.url_id }}">
-<input type="submit" value="Delete">
+  <input type="hidden" name="url_id" value="{{ url.url_id }}">
+  <input type="submit" class="btn btn-danger" value="Delete">
 </form>
 {% endif %}
 {% endblock %}

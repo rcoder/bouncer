@@ -3,7 +3,9 @@ body {
 }
 
 #search-form {
-  display: inline;
+}
+
+#delete-form {
 }
 
 a:link {
@@ -18,4 +20,9 @@ table.listing th {
 table.listing td {
   margin: 0px;
   padding: 0.25em;
+}
+
+.container-narrow {
+  max-width: 720px;
+  margin: 0 auto;
 }

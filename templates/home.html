@@ -6,7 +6,7 @@
 {% if size_of_lists == 0 %}
 <em>No URLs found! Want to <a href="/new">create one</a>?
 {% else %}
-<table class="listing">
+<table class="table table-striped">
   <tr>
     <th>Recently created</th>
     <th>Recently accessed</th>
@@ -22,6 +22,6 @@
 </table>
 
 <br>
-(<a href="/new">new link</a>)
+<a href="/new" class="btn btn-primary">Create link</a>
 {% endif %}
 {% endblock %}
