@@ -6,16 +6,21 @@
 from contextlib import contextmanager
 from flask import Flask, redirect, render_template, request, url_for
 
+import os
 import re
 import sqlite3
 
 app = Flask(__name__)
 
+VERSION = '0.0.1'
+DESC = 'Simple internal URL shortener/expander for teams'
+
 # Database helper functions (we don't need no steenkin' ORM!)
 
 @contextmanager
 def dbopen():
-  db = sqlite3.connect('bouncer.db')
+  db_path = os.environ.get('BOUNCER_DB_PATH', './bouncer.db')
+  db = sqlite3.connect(db_path)
   try:
     yield db
   finally:
@@ -185,7 +190,12 @@ def find():
       results = [make_url_dict(row) for row in c.fetchmany()]
       return render_template('list.html', results=results, search=search)
 
+def main():
+  port = os.environ.get("BOUNCER_HTTP_PORT", 5688)
+  debug = bool(os.environ.get("BOUNCER_DEBUG", None))
+  app.debug = debug
+  app.run(port=port)
+
 if __name__ == '__main__':
-  app.debug = True
-  app.run()
+  main()
 
