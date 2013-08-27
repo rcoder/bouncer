@@ -21,7 +21,14 @@ setuptools.setup(
   description=bouncer.DESC,
   long_description=readme,
   license='MIT',
-  entry_points={'console_scripts':['bouncerd = bouncer:main']},
-  packages=['bouncer'],
-  include_package_data=True
+  entry_points={
+    'console_scripts':[
+      'bouncerd = bouncer:main',
+      'bouncer-initdb = bouncer.db:initdb'
+    ]
+  },
+  packages=setuptools.find_packages(),
+  include_package_data=True,
+  zip_safe=False,
+  install_requires=['Flask']
 )

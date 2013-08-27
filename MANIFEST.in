@@ -1,0 +1,2 @@
+recursive-include bouncer/static *.css *.js *.map
+recursive-include bouncer/templates *.html
