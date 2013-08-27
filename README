@@ -3,4 +3,4 @@ environment to share bookmarks between colleagues.
 
 It has no internal security, so don't deploy it on a publicly-facing host
 unless you want mean people to delete all your links and/or rewrite them to
-point to really awful thinks.
+point to awful things.
