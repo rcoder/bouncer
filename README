@@ -11,3 +11,11 @@ BOUNCER_DB_PATH -> path for the SQLite DB holding all app state
 BOUNCER_PORT    -> port number for the web UI
 BOUNCER_DEBUG   -> if set, will enable Flask debugging for nice stack traces
                    (and even *less* security than normal!)
+
+To initialize the database schema, use a command like the following:
+
+BOUNCER_DB_PATH=/var/db/bouncer.db bouncer-initdb
+
+Then run the server like this:
+
+BOUNCER_DB_PATH=/var/db/bouncer.db bouncerd
