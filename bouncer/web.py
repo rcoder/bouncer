@@ -1,3 +1,6 @@
+# Copyright 2013 by Urban Airship and Lennon Day-Reynolds <lennon@urbanairship.com>
+# See license information in COPYING.
+
 import re
 
 from flask import Flask, redirect, render_template, request, url_for

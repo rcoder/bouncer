@@ -1,3 +1,6 @@
+# Copyright 2013 by Urban Airship and Lennon Day-Reynolds <lennon@urbanairship.com>
+# See license information in COPYING.
+
 from contextlib import contextmanager
 from pkg_resources import resource_string
 

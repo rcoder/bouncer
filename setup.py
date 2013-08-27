@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+# Copyright 2013 by Urban Airship and Lennon Day-Reynolds <lennon@urbanairship.com>
+# See license information in COPYING.
+
 import os
 import setuptools
 import sys
